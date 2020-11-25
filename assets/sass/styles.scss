@@ -1,15 +1,23 @@
-@import 'colors';
+@import 'variables';
 
-body {
-  font-family: 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
+html {
   font-size: 16px;
 }
 
+body {
+  font-family: $default-font;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: $color-white;
+}
+
+.block {
+  margin-bottom: 1.5rem;
+}
+
 .button {
-  background-color: white;
+  background-color: $color-white;
   border-color: $color-primary;
   border-style: solid;
   border-width: 2px;
@@ -23,7 +31,7 @@ body {
 
   &-primary {
     background-color: $color-primary;
-    color: white;
+    color: $color-white;
   }
 
   &-pill {
@@ -34,11 +42,11 @@ body {
 
 .card {
   box-sizing: border-box;
-  width: 262px;
-  height: 240px;
-  margin: 16px;
-  border-radius: 12px;
-  background: white;
+  width: 16.25rem;
+  height: 15rem;
+  margin: 1rem;
+  border-radius: 0.75rem;
+  background: $color-white;
 
   &-inner {
     display: flex;
@@ -46,9 +54,7 @@ body {
     justify-content: space-between;
 
     height: -webkit-fill-available;
-    padding: 16px;
-
-    font-size: 16px;
+    padding: 1.2rem 1rem;
   }
 
   &-item {
@@ -58,16 +64,27 @@ body {
   }
 }
 
+.container {
+  display: block;
+  max-width: 1192px;
+  width: 100%;
+  margin: 1rem auto;
+}
+
 .form {
   display: flex;
   flex-direction: column;
+
+  &-button {
+    color: inherit;
+  }
 
   &-inline {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 
-    max-width: 540px;
+    max-width: 34rem;
     width: 100%;
   }
 
@@ -78,9 +95,9 @@ body {
     margin-right: 1.6em;
     padding: 0.8em;
 
-    background-color: white;
-    border-color: $color-primary;
-    border-radius: 0.2em;
+    background-color: $color-white;
+    border-color: inherit;
+    border-radius: 0.25em;
     border-style: solid;
     border-width: 2px;
 
@@ -90,6 +107,7 @@ body {
 
 .item {
   display: flex;
+  @extend .block;
 
   &-label{
     order: 1;
@@ -108,24 +126,43 @@ body {
   align-items: center;
 
   box-sizing: border-box;
-  height: 224px;
-  padding: 32px 0;
+  height: 14.7rem;
+  padding: 1.8rem 0;
+
+  color: $color-navbar;
+
+  &-brand {
+    margin-right: 0.22em;
+    font-size: 0.9em;
+  }
+
+  &-button {
+    border-color: $color-navbar;
+    background-color: $color-navbar;
+    color: $color-white;
+  }
+
+  &-form {
+    color: $color-navbar;
+    border-color: $color-navbar;
+  }
 }
 
 .panel {
+  margin: 0 -1rem;
+  padding: 4.5rem 1.5rem 8.2rem;
+
+  background: linear-gradient(90deg, $color-gradient1 0%, $color-gradient2 75%, $color-primary 100%);
+}
+
+.slider {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-
-  margin: 8px -8px;
-  padding: 108px 80px 152px;
-
-  background: linear-gradient(90deg, $color-primary 0%, $color-gradient2 100%);
 }
 
 .title {
   font-size: 60px;
-  color: $color-primary;
   font-weight: 400;
 }
