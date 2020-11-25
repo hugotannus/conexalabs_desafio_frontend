@@ -2,31 +2,56 @@
 <html>
 
 <head>
-    <link href="https://hubconexa.com/wp-content/themes/conexa/assets/images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+  <link href="https://hubconexa.com/wp-content/themes/conexa/assets/images/favicon.ico" rel="shortcut icon"
+    type="image/x-icon">
 
-    <title>Desafio Front-End Developer ConexaLabs</title>
+  <title>Desafio Front-End Developer ConexaLabs</title>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
-    <link rel="stylesheet" href="./assets/styles.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
+  <link rel="stylesheet" href="./assets/styles.css">
 
-    <script src="https://kit.fontawesome.com/aa42c16abd.js" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/vue@next"></script>
+  <script src="https://kit.fontawesome.com/aa42c16abd.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/vue@next"></script>
 </head>
 
 <body>
-    <div id="app">
-        <h1>
-            {{ title }}
-            <i class="fas fa-thumbs-up fa"></i>
-        </h1>
-    </div>
+  <div id="app">
+    <nav class="navbar">
+      <span class="title">
+        <i class="fas fa-building" aria-hidden="true" style="font-size: 0.9em;"></i>
+        {{ title }}
+      </span>
+
+      <form action="" class="form form-inline">
+        <input class="form-input" type="search" name="search" id="search" placeholder="CNPJ">
+        <button class="button button-pill button-primary" type="submit">Localizar</button>
+      </form>
+    </nav>
+
+    <section id="result">
+      <div class="panel">
+        <card class="card"
+          v-for="(company, index) in companies"
+          :key="company.id"
+          :social="company.social"
+          :cnpj="company.cnpj"
+          :address="company.address"
+        />
+      </div>
+    </section>
+
+    <footer class="footer">
+
+    </footer>
+  </div>
 
 
-    <script src="./main.js"></script>
-    <script>
-        const App = app.mount('#app');
-    </script>
+  <script src="./main.js"></script>
+  <script src="./components/Cards.js"></script>
+  <script>
+    const App = app.mount('#app');
+  </script>
 </body>
 
 </html>
