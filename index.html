@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://hubconexa.com/wp-content/themes/conexa/assets/images/favicon.ico" rel="shortcut icon"
     type="image/x-icon">
 
@@ -11,6 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
   <link rel="stylesheet" href="./assets/styles.css">
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
   <script src="https://kit.fontawesome.com/aa42c16abd.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/vue@next"></script>
 </head>
@@ -30,17 +32,10 @@
     </nav>
 
     <div class="panel">
-      <div class="container">
-        <div class="slider">
-          <card class="card"
-          v-for="(company, index) in companies"
-          :key="company.id"
-          :social="company.social"
-          :cnpj="company.cnpj"
-          :address="company.address"
-        />
-        </div>
-      </div>
+      <slider :objects="companies"
+        @shuffle="shuffleCompanies"
+        @next="rotateLeft"
+        @prev="rotateRight"/>
     </div>
 
     <footer class="footer">
@@ -51,6 +46,7 @@
 
   <script src="./main.js"></script>
   <script src="./components/Cards.js"></script>
+  <script src="./components/Slider.js"></script>
   <script>
     const App = app.mount('#app');
   </script>

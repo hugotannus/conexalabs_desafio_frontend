@@ -44,9 +44,29 @@ body {
   box-sizing: border-box;
   width: 16.25rem;
   height: 15rem;
+  min-width: 16.25rem;
+  max-height: 15rem;
   margin: 1rem;
   border-radius: 0.75rem;
   background: $color-white;
+
+  transition: opacity 1.25s;
+
+  &-active {
+    opacity: 1;
+  }
+
+  &-hidden {
+    opacity: 0;
+  }
+
+  &-inactive {
+    opacity: 0.8;
+
+    &::hover {
+      opacity: 0.6;
+    }
+  }
 
   &-inner {
     display: flex;
@@ -69,6 +89,21 @@ body {
   max-width: 1192px;
   width: 100%;
   margin: 1rem auto;
+}
+
+.flex {
+  display: flex;
+
+  &-column {
+    @extend .flex;
+    flex-direction: column;
+
+    &-center {
+      @extend .flex-column;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
 
 .form {
@@ -157,12 +192,24 @@ body {
 
 .slider {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+
+  &-button {
+    font-size: 16px;
+  }
+
+  &-no-pointer-events {
+    pointer-events: none;
+  }
+
+  &-shift-left {
+    margin: -260px;
+  }
 }
 
 .title {
   font-size: 60px;
   font-weight: 400;
 }
+
+@import 'transitions';
