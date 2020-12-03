@@ -23,4 +23,14 @@
 
     z-index: 10;
   }
+
+  &-label {
+    position: relative;
+    left: 75px;
+    top: 8px;
+    max-width: 8em;
+    text-align: justify;
+    white-space: normal;
+    line-height: 16px;
+  }
 }

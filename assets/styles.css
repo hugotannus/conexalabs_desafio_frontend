@@ -207,6 +207,15 @@ html, body {
   box-shadow: 4px 5px 8px 3px rgba(0, 0, 0, 0.3);
   z-index: 10;
 }
+.maps-label {
+  position: relative;
+  left: 75px;
+  top: 8px;
+  max-width: 8em;
+  text-align: justify;
+  white-space: normal;
+  line-height: 16px;
+}
 
 .slider {
   display: flex;
