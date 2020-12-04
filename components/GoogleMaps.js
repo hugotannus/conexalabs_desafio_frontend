@@ -14,14 +14,7 @@ app.component('GoogleMaps', {
   `,
   mounted() {
     const goiania = new google.maps.LatLng(-16.681010707655762, -49.25628136315215);
-    const geocoder = new google.maps.Geocoder();
-    const address = this.currentCompany.address;
-    const companyName = this.currentCompany.name;
-
-    var request = {
-      query: this.currentCompany.name,
-      fields: ['name', 'geometry', 'icon']
-    }
+    const { name, address } = this.currentCompany;
 
     var map = new google.maps.Map(document.getElementById('map'), {
       center: goiania,
@@ -30,29 +23,70 @@ app.component('GoogleMaps', {
       mapId: "3f20e08f1addea6d",
     });
 
-    var service = new google.maps.places.PlacesService(map);
+    findPlaceByName()
+      .then(onPlaceFound)
+      .then(updateMap);
 
-    service.findPlaceFromQuery(request, function(results, status) {
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        updateMap(map, results[0]);
-      } else {
-        geocoder.geocode({ address }, function(results, status) {
-          if (status === google.maps.GeocoderStatus.OK) {
-            updateMap(map, results[0]);
-          }
-        });
-      }
-    });
+    // service.findPlaceFromQuery(request, function(results, status) {
+    //   if (status === google.maps.places.PlacesServiceStatus.OK) {
+    //     updateMap(map, results[0]);
+    //   } else {
+    //     geocoder.geocode({ address }, function(results, status) {
+    //       if (status === google.maps.GeocoderStatus.OK) {
+    //         updateMap(map, results[0]);
+    //       }
+    //     });
+    //   }
+    // });
 
-    function updateMap(map, result) {
+    ///// Helper Functions
+
+
+    function findPlaceByAddress() {
+      const geocoder = new google.maps.Geocoder();
+      return geocoder.geocode({ address }, function(result, status) {
+        var results = result || {};
+        results.status = status;
+
+        return results;
+      });
+    }
+
+    function findPlaceByName() {
+      var service = new google.maps.places.PlacesService(map);
+      var request = { query: name, fields: ['name', 'geometry'] }
+
+      return service.findPlaceFromQuery(request, function(result, status) {
+        var results = result || {};
+        results.status = status;
+
+        return results;
+      });
+    }
+
+    function onPlaceFound(placesResult) {
+      return findPlaceByAddress().then(function (geocoderResult) {
+        return bestResult({ placesResult, geocoderResult });
+      });
+    }
+
+    function bestResult(results) {
+      const { placesResult, geocoderResult } = results;
+
+      if (placesResult.status === google.maps.places.PlacesServiceStatus.OK)
+        return placesResult;
+      else
+        return geocoderResult;
+    }
+
+    function updateMap(result) {
       const { bounds, location, viewport } = result.geometry;
       const coordinates = bounds ? bounds.getCenter() : location;
 
       map.fitBounds(viewport);
       const { OPTIONAL_AND_HIDES_LOWER_PRIORITY, REQUIRED_AND_HIDES_OPTIONAL } = google.maps.CollisionBehavior;
 
-
-      let marker = new google.maps.Marker({
+      new google.maps.Marker({
         position: coordinates,
         map: map,
         collisionBehavior: OPTIONAL_AND_HIDES_LOWER_PRIORITY,
@@ -72,5 +106,17 @@ app.component('GoogleMaps', {
     ...Vuex.mapState([
       'currentCompany'
     ]),
+    address() {
+      return this.currentCompany.address;
+    },
+    name() {
+      return this.currentCompany.name;
+    },
+    PlacesServiceStatusOK() {
+      return google.maps.places.PlacesServiceStatus.OK;
+    },
+    GeocoderStatusOK() {
+      return google.maps.GeocoderStatus.OK;
+    }
   }
 })
