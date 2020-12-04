@@ -139,6 +139,8 @@ dist
 # TernJS port file
 .tern-port
 
+.vscode
+
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
@@ -148,5 +150,8 @@ dist
 dist/
 npm-debug.log
 yarn-error.log
+
+# SASS
+assets/styles.css.map
 
 # End of https://www.toptal.com/developers/gitignore/api/node,vuejs,macos
