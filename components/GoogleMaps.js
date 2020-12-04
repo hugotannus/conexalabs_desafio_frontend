@@ -13,7 +13,7 @@ app.component('GoogleMaps', {
   </div>
   `,
   mounted() {
-    const goiania = new google.maps.LatLng(-16.67280792942945, -49.29466264014952);
+    const goiania = new google.maps.LatLng(-16.681010707655762, -49.25628136315215);
     const geocoder = new google.maps.Geocoder();
     const address = this.currentCompany.address;
     const companyName = this.currentCompany.name;
@@ -27,6 +27,7 @@ app.component('GoogleMaps', {
       center: goiania,
       disableDefaultUI: true,
       zoom: 15,
+      mapId: "3f20e08f1addea6d",
     });
 
     var service = new google.maps.places.PlacesService(map);
@@ -47,21 +48,16 @@ app.component('GoogleMaps', {
       const { bounds, location, viewport } = result.geometry;
       const coordinates = bounds ? bounds.getCenter() : location;
 
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: coordinates,
-        disableDefaultUI: true,
-        zoom: 15,
-      });
-
       map.fitBounds(viewport);
+      const { OPTIONAL_AND_HIDES_LOWER_PRIORITY, REQUIRED_AND_HIDES_OPTIONAL } = google.maps.CollisionBehavior;
+
 
       let marker = new google.maps.Marker({
         position: coordinates,
         map: map,
-        // collisionBehavior: google.maps.CollisionBehavior.REQUIRED_AND_HIDES_OPTIONAL,
+        collisionBehavior: OPTIONAL_AND_HIDES_LOWER_PRIORITY,
         animation: google.maps.Animation.DROP,
         icon: "https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi2.png",
-        // icon: "https://mts.googleapis.com/vt/icon/name=icons/spotlight/spotlight-waypoint-blue.png&psize=16&font=fonts/Roboto-Regular.ttf&color=ff333333&ax=44&ay=48&scale=1",
         label: {
           text: result.name || companyName,
           color: '#d22c28',
