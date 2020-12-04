@@ -190,7 +190,8 @@ html, body {
 .maps-canvas {
   position: fixed !important;
   width: 100%;
-  height: calc(100% - 14.8rem);
+  /*height: calc(100% - 14.8rem);*/
+  height: 100%;
   margin: 0;
   padding: 0;
   z-index: 5;

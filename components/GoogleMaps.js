@@ -72,8 +72,5 @@ app.component('GoogleMaps', {
     ...Vuex.mapState([
       'currentCompany'
     ]),
-    address() {
-      return this.currentCompany.address;
-    }
   }
 })
