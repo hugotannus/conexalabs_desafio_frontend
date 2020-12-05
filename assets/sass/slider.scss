@@ -2,7 +2,6 @@
 
 .slider {
   position: relative;
-
   display: flex;
   align-items: stretch;
   justify-content: space-between;
@@ -19,64 +18,46 @@
 
   &-control {
     cursor: pointer;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
-
     width: 4rem;
     margin: 1rem 0;
     border-radius: 0.75rem;
-
     background-color: transparent;
     opacity: 0.4;
     transition: all 0.2s;
 
-    &-left {
+    &-left, &-right {
       position: absolute;
       top: 0;
       bottom: 0;
-      left: 0;
+    }
 
+    &-left {
+      left: 0;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
 
     &-right {
-      position: absolute;
-      top: 0;
-      bottom: 0;
       right: 0;
-
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
 
-    &:hover {
-      opacity: 0.8;
-
-      .slider-button {
-        background-color: rgba(255,255,255, 0.1);
-
-        &-left {
-          transform: translateX(4px);
-        }
-
-        &-right {
-          transform: translateX(-4px);
-        }
-      }
-    }
+    &:hover { opacity: 0.8; }
+    &:hover .slider-button { background-color: rgba(255,255,255, 0.1); }
+    &:hover .slider-button { &-left, &-right { width: 4rem; } }
   }
 
   &-button {
-    display: block;
+    display: flex;
+    flex-direction: column;
     align-self: center;
-    width: 4rem;
+    width: 3.75rem;
     height: 4rem;
-
     border-radius: 1em;
-
     transition: all 0.1s ease-in-out;
 
     &::after {
@@ -87,24 +68,19 @@
       height: 1.75rem;
       margin-top: 1rem;
       padding: 0;
-
       color: #fbf8ff;
       border: 2px solid #fbf8ff;
       background-color: transparent;
     }
 
-
     &-left {
-      align-self: flex-end;
       margin-right: 4px;
-
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
 
-      transition: all 0.2s ease-in-out;
-
       &::after {
-        margin-left: 1.75rem;
+        align-self: flex-end;
+        margin-right: 0.5rem;
         border-top: none;
         border-right: none;
         transform: rotate(45deg);
@@ -112,27 +88,25 @@
     }
 
     &-right {
-      align-self: flex-start;
       margin-left: 4px;
-
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
 
-      transition: all 0.2s ease-in-out;
-
       &::after {
+        align-self: flex-start;
         margin-left: 0.5rem;
         border-top: none;
         border-left: none;
         transform: rotate(-45deg);
       }
     }
+
+    &-left, &-right { transition: all 0.2s ease-in-out; }
   }
 
   &-element {
     cursor: pointer;
     margin: 1rem;
-
     opacity: 1;
     transition: all 0.1s ease-out, opacity 0.3s ease-in 0.3s;
 
@@ -140,20 +114,13 @@
       transform: translateY(-2px);
       box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.2);
     }
-
     &:active {
       transform: translateY(0);
       box-shadow: inset 0px 2px 2px 0px rgba(0, 0, 0, 0.6);
     }
 
-    &-hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    &-disabled {
-      opacity: 0.3;
-      pointer-events: none;
-    }
+    &-hidden { opacity: 0; }
+    &-disabled { opacity: 0.3; }
+    &-disabled, &-hidden { pointer-events: none; }
   }
 }

@@ -58,44 +58,6 @@ html, body {
   padding-bottom: 1.25rem;
 }
 
-.flex, .flex-column, .flex-column-center {
-  display: flex;
-}
-.flex-column, .flex-column-center {
-  flex-direction: column;
-}
-.flex-column-center {
-  align-items: center;
-  justify-content: center;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-}
-.form-button {
-  color: inherit;
-}
-.form-inline {
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 34rem;
-  width: 100%;
-}
-.form-input {
-  height: 3.2em;
-  flex-grow: 1;
-  margin-right: 1.6em;
-  padding: 0.8em;
-  background-color: #fbf8ff;
-  border-color: inherit;
-  border-radius: 0.25em;
-  border-style: solid;
-  border-width: 2px;
-  font-size: 20px;
-}
-
 .item {
   display: flex;
 }
@@ -108,43 +70,6 @@ html, body {
 .item-content {
   order: 2;
   font-weight: 600;
-}
-
-.navbar {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  box-sizing: border-box;
-  height: 15.2rem;
-  max-height: 15.2rem;
-  padding: 1.8rem 0;
-  color: #3a8970;
-}
-.navbar-brand {
-  margin-right: 0.22em;
-  font-size: 0.9em;
-}
-.navbar-button {
-  border-color: #3a8970;
-  background-color: #3a8970;
-  color: #fbf8ff;
-  transition: all 0.2s ease;
-}
-.navbar-button:hover {
-  border-color: #367c66;
-  background-color: #367c66;
-}
-.navbar-button:active {
-  border-color: #2e725d;
-  background-color: #2e725d;
-}
-.navbar-button:focus {
-  outline: unset;
-}
-.navbar-form {
-  color: #3a8970;
-  border-color: #3a8970;
 }
 
 .panel {
@@ -172,10 +97,6 @@ html, body {
   font-weight: 300;
 }
 
-.position-relative {
-  position: relative;
-}
-
 .title {
   font-size: 60px;
   font-weight: 400;
@@ -191,9 +112,6 @@ html, body {
   background: #fbf8ff;
   transition: opacity 1.25s;
 }
-.card-active {
-  opacity: 1;
-}
 .card-header {
   margin-bottom: 1.2rem;
   margin-top: 0.25rem;
@@ -207,6 +125,7 @@ html, body {
   border: none;
   border-radius: 50%;
   transition: all 0.1s ease;
+  margin-left: -0.5rem;
 }
 .card-header-button:hover {
   background-color: rgba(187, 196, 192, 0.1);
@@ -217,9 +136,6 @@ html, body {
 .card-header-button:focus {
   outline: unset;
   background-color: rgba(187, 196, 192, 0.1);
-}
-.card-header-left {
-  margin-left: -0.5rem;
 }
 .card-inner {
   display: flex;
@@ -233,10 +149,33 @@ html, body {
   color: #388699;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+}
+.form-inline {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 34rem;
+  width: 100%;
+}
+.form-input {
+  flex-grow: 1;
+  font-size: 20px;
+  height: 3.2em;
+  margin-right: 1.6em;
+  padding: 0.8em;
+  background-color: #fbf8ff;
+  border-color: inherit;
+  border-radius: 0.25em;
+  border-style: solid;
+  border-width: 2px;
+}
+
 .maps-canvas {
   position: fixed !important;
   width: 100%;
-  /*height: calc(100% - 14.8rem);*/
   height: 100%;
   margin: 0;
   padding: 0;
@@ -258,11 +197,47 @@ html, body {
 .maps-label {
   position: relative;
   left: 6em;
-  /* top: 8px; */
   max-width: 10em;
   text-align: start;
   white-space: normal;
   line-height: 16px;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  height: 15.2rem;
+  max-height: 15.2rem;
+  padding: 1.8rem 0;
+  color: #3a8970;
+}
+.navbar-brand {
+  font-size: 0.9em;
+  margin-right: 0.22em;
+}
+.navbar-button {
+  border-color: #3a8970;
+  background-color: #3a8970;
+  color: #fbf8ff;
+  transition: all 0.2s ease;
+}
+.navbar-button:hover {
+  border-color: #367c66;
+  background-color: #367c66;
+}
+.navbar-button:active {
+  border-color: #2e725d;
+  background-color: #2e725d;
+}
+.navbar-button:focus {
+  outline: unset;
+}
+.navbar-form {
+  color: #3a8970;
+  border-color: #3a8970;
 }
 
 .slider {
@@ -292,18 +267,17 @@ html, body {
   opacity: 0.4;
   transition: all 0.2s;
 }
-.slider-control-left {
+.slider-control-left, .slider-control-right {
   position: absolute;
   top: 0;
   bottom: 0;
+}
+.slider-control-left {
   left: 0;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 .slider-control-right {
-  position: absolute;
-  top: 0;
-  bottom: 0;
   right: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -314,16 +288,14 @@ html, body {
 .slider-control:hover .slider-button {
   background-color: rgba(255, 255, 255, 0.1);
 }
-.slider-control:hover .slider-button-left {
-  transform: translateX(4px);
-}
-.slider-control:hover .slider-button-right {
-  transform: translateX(-4px);
+.slider-control:hover .slider-button-left, .slider-control:hover .slider-button-right {
+  width: 4rem;
 }
 .slider-button {
-  display: block;
+  display: flex;
+  flex-direction: column;
   align-self: center;
-  width: 4rem;
+  width: 3.75rem;
   height: 4rem;
   border-radius: 1em;
   transition: all 0.1s ease-in-out;
@@ -341,30 +313,31 @@ html, body {
   background-color: transparent;
 }
 .slider-button-left {
-  align-self: flex-end;
   margin-right: 4px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  transition: all 0.2s ease-in-out;
 }
 .slider-button-left::after {
-  margin-left: 1.75rem;
+  align-self: flex-end;
+  margin-right: 0.5rem;
   border-top: none;
   border-right: none;
   transform: rotate(45deg);
 }
 .slider-button-right {
-  align-self: flex-start;
   margin-left: 4px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  transition: all 0.2s ease-in-out;
 }
 .slider-button-right::after {
+  align-self: flex-start;
   margin-left: 0.5rem;
   border-top: none;
   border-left: none;
   transform: rotate(-45deg);
+}
+.slider-button-left, .slider-button-right {
+  transition: all 0.2s ease-in-out;
 }
 .slider-element {
   cursor: pointer;
@@ -382,10 +355,11 @@ html, body {
 }
 .slider-element-hidden {
   opacity: 0;
-  pointer-events: none;
 }
 .slider-element-disabled {
   opacity: 0.3;
+}
+.slider-element-disabled, .slider-element-hidden {
   pointer-events: none;
 }
 
@@ -400,6 +374,21 @@ html, body {
 .slider-list-enter, .slider-list-leave-to {
   opacity: 0;
   transform: translateY(30px);
+}
+
+.flex, .flex-column, .flex-column-center {
+  display: flex;
+}
+.flex-column, .flex-column-center {
+  flex-direction: column;
+}
+.flex-column-center {
+  align-items: center;
+  justify-content: center;
+}
+
+.position-relative {
+  position: relative;
 }
 
 /*# sourceMappingURL=styles.css.map */

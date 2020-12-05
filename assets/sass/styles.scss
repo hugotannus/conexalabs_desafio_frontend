@@ -1,8 +1,6 @@
 @import 'variables';
 
-html {
-  font-size: 16px;
-}
+html { font-size: 16px; }
 
 body {
   font-family: $default-font;
@@ -19,20 +17,15 @@ html, body {
   padding: 0;
 }
 
-.block {
-  margin-bottom: 1.25rem;
-}
+.block { margin-bottom: 1.25rem; }
 
 .button {
   cursor: pointer;
-
   background-color: $color-white;
   border-color: $color-primary;
   border-style: solid;
   border-width: 2px;
-
   padding: 0.7em 1.2em;
-
   color: $color-primary;
   font-size: 20px;
   font-weight: 600;
@@ -42,7 +35,6 @@ html, body {
     margin-left: -0.5rem;
     padding: 0;
     z-index: 10;
-
     background-color: transparent;
     border: none;
     border-radius: 50%;
@@ -62,60 +54,10 @@ html, body {
 .container {
   display: block;
   position: relative;
-  // max-width: 1192px;
   width: 100%;
   height: 100%;
   margin: 1rem auto;
   padding-bottom: 1.25rem;
-}
-
-.flex {
-  display: flex;
-
-  &-column {
-    @extend .flex;
-    flex-direction: column;
-
-    &-center {
-      @extend .flex-column;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-
-  &-button {
-    color: inherit;
-  }
-
-  &-inline {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    max-width: 34rem;
-    width: 100%;
-  }
-
-  &-input {
-    height: 3.2em;
-    flex-grow: 1;
-
-    margin-right: 1.6em;
-    padding: 0.8em;
-
-    background-color: $color-white;
-    border-color: inherit;
-    border-radius: 0.25em;
-    border-style: solid;
-    border-width: 2px;
-
-    font-size: 20px;
-  }
 }
 
 .item {
@@ -128,55 +70,10 @@ html, body {
     font-weight: 400;
     line-height: 1.25rem;
   }
+
   &-content{
     order: 2;
     font-weight: 600;
-  }
-}
-
-.navbar {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-
-  box-sizing: border-box;
-  height: 15.2rem;
-  max-height: 15.2rem;
-  padding: 1.8rem 0;
-
-  color: $color-navbar;
-
-  &-brand {
-    margin-right: 0.22em;
-    font-size: 0.9em;
-  }
-
-  &-button {
-    border-color: $color-navbar;
-    background-color: $color-navbar;
-    color: $color-white;
-
-    transition: all 0.2s ease;
-
-    &:hover {
-      border-color: $color-green-dark;
-      background-color: $color-green-dark;
-    }
-
-    &:active {
-      border-color: $color-green-darker;
-      background-color: $color-green-darker;
-    }
-
-    &:focus {
-      outline: unset;
-    }
-  }
-
-  &-form {
-    color: $color-navbar;
-    border-color: $color-navbar;
   }
 }
 
@@ -185,7 +82,6 @@ html, body {
   height: 31.75rem;
   max-height: 31.75rem;
   margin: 0 auto;
-
   background: linear-gradient(90deg, $color-gradient1 0%, $color-gradient2 75%, $color-primary 100%);
 
   &-inner {
@@ -193,16 +89,12 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     height: 100%;
     padding: 0;
   }
 
   &-empty {
-
-    &-image {
-      width: 200px;
-    }
+    &-image { width: 200px; }
 
     &-text {
       margin: 1.75rem;
@@ -213,19 +105,15 @@ html, body {
   }
 }
 
-.position {
-
-  &-relative{
-    position: relative;
-  }
-}
-
 .title {
   font-size: 60px;
   font-weight: 400;
 }
 
 @import 'card';
+@import 'form';
 @import 'maps';
+@import 'navbar';
 @import 'slider';
 @import 'transitions';
+@import 'helpers';

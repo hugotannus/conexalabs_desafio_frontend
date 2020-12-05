@@ -1,0 +1,25 @@
+.form {
+  display: flex;
+  flex-direction: column;
+
+  &-inline {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 34rem;
+    width: 100%;
+  }
+
+  &-input {
+    flex-grow: 1;
+    font-size: 20px;
+    height: 3.2em;
+    margin-right: 1.6em;
+    padding: 0.8em;
+    background-color: $color-white;
+    border-color: inherit;
+    border-radius: 0.25em;
+    border-style: solid;
+    border-width: 2px;
+  }
+}
