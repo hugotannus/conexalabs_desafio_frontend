@@ -1,37 +1,159 @@
+@import 'variables';
 
 .slider {
+  position: relative;
+
   display: flex;
   align-items: stretch;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
-  overflow: hidden;
+
+  &-content {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    width: 100%;
+    margin: 0 4.5rem;
+    overflow: hidden;
+  }
+
+  &-control {
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 4rem;
+    margin: 1rem 0;
+    border-radius: 0.75rem;
+
+    background-color: transparent;
+    opacity: 0.4;
+    transition: all 0.2s;
+
+    &-left {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &-right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &:hover {
+      opacity: 0.8;
+
+      .slider-button {
+        background-color: rgba(255,255,255, 0.1);
+
+        &-left {
+          transform: translateX(4px);
+        }
+
+        &-right {
+          transform: translateX(-4px);
+        }
+      }
+    }
+  }
 
   &-button {
-    font-size: 16px;
+    display: block;
+    align-self: center;
+    width: 4rem;
+    height: 4rem;
+
+    border-radius: 1em;
+
+    transition: all 0.1s ease-in-out;
+
+    &::after {
+      content: '';
+      display: block;
+      box-sizing: border-box;
+      width: 1.75rem;
+      height: 1.75rem;
+      margin-top: 1rem;
+      padding: 0;
+
+      color: #fbf8ff;
+      border: 2px solid #fbf8ff;
+      background-color: transparent;
+    }
+
+
+    &-left {
+      align-self: flex-end;
+      margin-right: 4px;
+
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+
+      transition: all 0.2s ease-in-out;
+
+      &::after {
+        margin-left: 1.75rem;
+        border-top: none;
+        border-right: none;
+        transform: rotate(45deg);
+      }
+    }
+
+    &-right {
+      align-self: flex-start;
+      margin-left: 4px;
+
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+
+      transition: all 0.2s ease-in-out;
+
+      &::after {
+        margin-left: 0.5rem;
+        border-top: none;
+        border-left: none;
+        transform: rotate(-45deg);
+      }
+    }
   }
 
   &-element {
     cursor: pointer;
     margin: 1rem;
 
-    &-active {
-      opacity: 1;
+    opacity: 1;
+    transition: all 0.1s ease-out, opacity 0.3s ease-in 0.3s;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: inset 0px 2px 2px 0px rgba(0, 0, 0, 0.6);
     }
 
     &-hidden {
       opacity: 0;
+      pointer-events: none;
     }
 
-    &-inactive {
-      opacity: 0.8;
-
-      &::hover {
-        opacity: 0.6;
-      }
+    &-disabled {
+      opacity: 0.3;
+      pointer-events: none;
     }
-  }
-
-  &-no-pointer-events {
-    pointer-events: none;
   }
 }

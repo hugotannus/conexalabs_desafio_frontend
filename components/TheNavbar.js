@@ -13,8 +13,6 @@ app.component('TheNavbar', {
       <input class="form-input" v-model="cnpj" type="search" placeholder="CNPJ...">
       <button class="button button-pill button-primary navbar-button" type="submit" >Localizar</button>
     </form>
-
-    <router-link to="/location">GoogleMaps</router-link>
   </nav>`,
   data() {
     return {

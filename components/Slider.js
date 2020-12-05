@@ -3,22 +3,26 @@ app.component('Slider', {
     elements: Object,
   },
   template:/*html*/`
-    <div id="slider" class="container flex-column-center">
-      <transition-group name="slider-list" class="slider" tag="div">
-        <slot v-for="(element, index) in elements"
-          :visibility="elementVisibility(index)"
-          :element="element"
-        ></slot>
-      </transition-group>
+    <div class="container flex-column-center">
+      <div class="slider">
+        <div class="slider-control slider-control-left"
+          @click="prev()"
+          @mouseenter="prev()">
+          <span class="slider-button slider-button-left" />
+        </div>
 
-      <div>
-        <button class="button slider-button" @click="prev">
-          <i class="fa fa-arrow-circle-left"></i>
-        </button>
-        <button class="button slider-button" @click="shuffle">Shuffle</button>
-        <button class="button slider-button" @click="next">
-          <i class="fa fa-arrow-circle-right"></i>
-        </button>
+        <transition-group class="slider-content" name="slider-list" tag="div">
+          <slot v-for="(element, index) in elements"
+            :visibility="elementVisibility(index)"
+            :element="element"
+          ></slot>
+        </transition-group>
+
+        <div class="slider-control slider-control-right"
+          @click="next()"
+          @mouseenter="next()">
+          <span class="slider-button slider-button-right" />
+        </div>
       </div>
     </div>`,
   computed: {
@@ -37,22 +41,17 @@ app.component('Slider', {
       var start = Math.floor( (count - threshold) / 2 );
       var end = count - start - (threshold % 2);
 
-      if(start <= i && i <= end) {
-        elementClass += 'slider-element-' + ( i == start || i == end ? 'inactive' :  'active');
-      } else {
-        elementClass += 'slider-element-hidden';
+      if(start >= i || i >= end) {
+        elementClass += 'slider-element-' + ( i == start || i == end ? 'disabled' :  'hidden');
       }
 
       return elementClass;
     },
-    shuffle() {
-      this.$store.commit('shuffle');
-    },
-    next() {
-      this.$store.commit('rotateListLeft');
-    },
-    prev() {
-      this.$store.commit('rotateListRight');
-    },
+    next: _.throttle(function() {
+      this.$store.commit('rotateListLeft')
+    }, 600),
+    prev: _.throttle(function() {
+      this.$store.commit('rotateListRight')
+    }, 600),
   },
 })

@@ -9,6 +9,14 @@ const store = Vuex.createStore({
   },
 
   actions: {
+    initialize({ commit, state }) {
+      commit('initializeStore');
+
+      if(state.companies.length) {
+        commit('generateSliderList');
+      }
+    },
+
     handleSearch({ commit, state }, keyword) {
       var onlyDigits = keyword.match(/\d+/g).join('');
 
@@ -27,7 +35,7 @@ const store = Vuex.createStore({
 
     selectCompany({ commit }, cnpj) {
       commit('setCurrentCompany', cnpj);
-    }
+    },
   },
 
   getters: {
@@ -77,6 +85,8 @@ const store = Vuex.createStore({
 
       state.companies = companies ? JSON.parse(companies) : sampleData;
       state.currentCompany = currentCompany ? JSON.parse(currentCompany) : sampleData[0];
+      // state.companies = companies ? JSON.parse(companies) : [];
+      // state.currentCompany = currentCompany ? JSON.parse(currentCompany) : {};
     },
 
     generateSliderList(state) {
@@ -86,9 +96,11 @@ const store = Vuex.createStore({
       var threshold = Math.round( (vw - 100) / elWidth );
       var elements = [];
 
-      do {
-        elements = elements.concat([...state.companies]);
-      } while(elements.length < threshold + 2);
+      if(state.companies.length > 0) {
+        do {
+          elements = elements.concat([...state.companies]);
+        } while(elements.length < threshold + 2);
+      }
 
       state.sliderList = elements.map(e => e = {...e});
     },

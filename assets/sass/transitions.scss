@@ -1,6 +1,7 @@
 .slider-list{
   &-move {
-    transition: transform 0.8s ease, opacity 0.6s ease 0.8s;
+    pointer-events: none;
+    transition: transform 0.6s linear, opacity 0.3s ease-in 0.3s;
   }
 
   &-enter-active, &-leave-active {

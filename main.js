@@ -1,8 +1,5 @@
 const app = Vue.createApp({
   beforeCreate(){
-    this.$store.commit('initializeStore');
+    this.$store.dispatch('initialize');
   },
-  created() {
-    this.$store.commit('generateSliderList');
-  }
 })
