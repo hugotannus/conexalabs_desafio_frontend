@@ -152,13 +152,14 @@ html, body {
 .form {
   display: flex;
   flex-direction: column;
+  width: 35rem;
 }
 .form-inline {
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  max-width: 34rem;
-  width: 100%;
+  border-color: inherit;
 }
 .form-input {
   flex-grow: 1;
@@ -171,6 +172,21 @@ html, body {
   border-radius: 0.25em;
   border-style: solid;
   border-width: 2px;
+}
+.form-input-error {
+  border-color: #801411;
+}
+.form-message {
+  font-size: 0.75rem;
+  margin: 0 0.0625rem;
+  max-width: 20rem;
+  line-height: 1.25em;
+  text-align: start;
+  white-space: normal;
+  color: #667470;
+}
+.form-message-error {
+  color: #801411;
 }
 
 .maps-canvas {

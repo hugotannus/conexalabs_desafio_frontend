@@ -3,9 +3,22 @@ const store = Vuex.createStore({
     return {
       companies: [],
       currentCompany: {},
+      info: {
+        status: false,
+        message: '',
+      },
       sliderList: [],
       viewportWidth: window.innerWidth,
     }
+  },
+
+  getters: {
+    allCompanies:   (state) => state.companies,
+    company:  (state, cnpj) => state.companies.find(company => company.cnpj === cnpj),
+    companiesCount: (state) => state.companies.length,
+    sliderListSize: (state) => state.sliderList.length,
+    infoStatus:     (state) => state.info && state.info.status,
+    infoMessage:    (state) => state.info && state.info.message,
   },
 
   actions: {
@@ -18,31 +31,62 @@ const store = Vuex.createStore({
     },
 
     handleSearch({ commit, state }, keyword) {
-      var onlyDigits = keyword.match(/\d+/g).join('');
+      commit('clearInfoMessage');
 
-      if(onlyDigits.length > 15 || onlyDigits.length < 13) {
-        // TO-DO: Notify message to user.
-        console.log("Invalid cnpj number");
-      }
-      else if(state.companies.find( ({ cnpj }) => cnpj === keyword)) {
-        commit('updateSliderPosition', keyword);
-      }
-      else {
-        axios.get(`https://www.receitaws.com.br/v1/cnpj/${onlyDigits}`)
-          .then(response => commit('handleSearchResult', response.data));
+      try {
+        if(keyword === null || keyword.length === 0) {
+          throw {
+            status: 'INFO',
+            message: 'Digite um CNPJ para buscar sua localização.'
+          }
+        }
+
+        var onlyDigits = keyword.match(/\d+/g);
+
+        if(onlyDigits === null) {
+          throw {
+            status: 'ERROR',
+            message: 'Essa busca considera apenas números/dígitos, filtrando quaisquer outros caracteres digitados.'
+          }
+        }
+
+        onlyDigits = onlyDigits.join('');
+
+        if(onlyDigits.length > 15 || onlyDigits.length < 13) {
+          throw {
+            status: 'ERROR',
+            message: 'A quantidade de dígitos informada não corresponde a um número de CNPJ válido.'
+          };
+        }
+
+        if(state.companies.find( ({ cnpj }) => cnpj === keyword)) {
+          commit('updateSliderPosition', keyword);
+        } else {
+          axios.get(`https://www.receitaws.com.br/v1/cnpj/${onlyDigits}`)
+          .then(response => {
+
+            if(response.data.status === 'ERROR') {
+              throw {
+                message: `${response.data.message} ou não encontrado.`,
+                status: 'NOTFOUND'
+              }
+            }
+
+            return commit('addCompany', response.data)
+          });
+        }
+      } catch(e) {
+        commit('setInfoMessage', {
+          status: e.status || 'ERROR',
+          message: e.message || 'Não foi possível realizar sua busca!'
+        });
       }
     },
 
     selectCompany({ commit }, cnpj) {
       commit('setCurrentCompany', cnpj);
+      commit('clearInfoMessage');
     },
-  },
-
-  getters: {
-    allCompanies: (state) => state.companies,
-    company: (state, cnpj) => state.companies.find(company => company.cnpj === cnpj),
-    companiesCount: (state) => state.companies.length,
-    sliderListSize: (state) => state.sliderList.length,
   },
 
   mutations: {
@@ -105,43 +149,57 @@ const store = Vuex.createStore({
       state.sliderList = elements.map(e => e = {...e});
     },
 
-    handleSearchResult(_state, data) {
-      if(data.message) {
-        // TO-DO: Notify message to user.
-        console.log(data.message);
-        return;
-      } else {
-        store.commit('addCompany', data);
-      }
+    clearInfoMessage(state) {
+      state.info.status = false;
+      state.info.message = '';
     },
 
     addCompany(state, data) {
-      const { nome, cnpj, logradouro, numero, bairro, municipio, uf } = data;
-      const company = {
-        cnpj,
-        cnpjNumber: cnpj.match(/\d+/g).join(''),
-        name: nome.split(' ').map(e => _.upperFirst(e.toLowerCase())).join(' '),
-        address: [
-          logradouro,
-          numero,
-          bairro,
-          municipio,
-        ].map( function(element) {
-          let arr = element.split(' ');
-          return arr.map(e => _.upperFirst(e.toLowerCase())).join(' ');
-        }).join(', ').concat('-', uf),
-      }
+      try {
+        const { nome, cnpj, logradouro, numero, bairro, municipio, uf } = data;
+        const company = {
+          cnpj,
+          cnpjNumber: cnpj.match(/\d+/g).join(''),
+          name: nome.split(' ').map(e => _.upperFirst(e.toLowerCase())).join(' '),
+          address: [
+            logradouro,
+            numero,
+            bairro,
+            municipio,
+          ].map( function(element) {
+            let arr = element.split(' ');
+            return arr.map(e => _.upperFirst(e.toLowerCase())).join(' ');
+          }).join(', ').concat('-', uf),
+        }
 
-      store.commit('updateSliderList', company);
-      state.companies.push(company);
-      state.currentCompany = company;
-      localStorage.setItem('companies', JSON.stringify(state.companies));
-      localStorage.setItem('currentCompany', JSON.stringify(state.currentCompany));
+        store.commit('updateSliderList', company);
+        state.companies.push(company);
+        state.currentCompany = company;
+        localStorage.setItem('companies', JSON.stringify(state.companies));
+        localStorage.setItem('currentCompany', JSON.stringify(state.currentCompany));
+      } catch (e) {
+        commit('setInfoMessage', {
+          status: e.status || 'ERROR',
+          message: e.message || 'Erro ao adicionar empresa encontrada.'
+        });
+      }
     },
 
     setCurrentCompany(state, cnpj) {
-      state.currentCompany = state.companies.find(company => company.cnpj === cnpj);
-      localStorage.setItem('currentCompany', JSON.stringify(state.currentCompany));
+      try {
+        state.currentCompany = state.companies.find(company => company.cnpj === cnpj);
+        localStorage.setItem('currentCompany', JSON.stringify(state.currentCompany));
+      } catch(e) {
+        commit('setInfoMessage', {
+          status: e.status || 'ERROR',
+          message: e.message || 'Erro inexperado: não foi possível selecionar empresa.'
+        });
+      }
+    },
+
+    setInfoMessage(state, data) {
+      state.info.status = data.status;
+      state.info.message = data.message;
     },
 
     rotateListLeft(state) {

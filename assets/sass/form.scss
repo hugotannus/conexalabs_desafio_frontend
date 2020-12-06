@@ -1,13 +1,14 @@
 .form {
   display: flex;
   flex-direction: column;
+  width: 35rem;
 
   &-inline {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    max-width: 34rem;
-    width: 100%;
+    border-color: inherit;
   }
 
   &-input {
@@ -21,5 +22,19 @@
     border-radius: 0.25em;
     border-style: solid;
     border-width: 2px;
+
+    &-error { border-color: $color-red-1; }
+  }
+
+  &-message {
+    font-size: 0.75rem;
+    margin: 0 0.0625rem;
+    max-width: 20rem;
+    line-height: 1.25em;
+    text-align: start;
+    white-space: normal;
+    color: $color-grey-1;
+
+    &-error { color: $color-red-1; }
   }
 }
