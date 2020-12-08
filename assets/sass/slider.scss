@@ -123,4 +123,17 @@
     &-disabled { opacity: 0.3; }
     &-disabled, &-hidden { pointer-events: none; }
   }
+
+  &-hidden-controls { .slider-control { display: none; } }
+}
+
+@media (max-width: 990px) {
+  .slider-content { margin: 0; }
+}
+
+@media (max-width: 420px) {
+  .slider-button-after {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 }

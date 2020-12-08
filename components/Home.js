@@ -10,9 +10,15 @@ app.component('Home', {
             <img class="panel-empty-image" :src="firstSearchImagePath"/>
             <span class="panel-empty-text">{{ firstSearchMessage }}</span>
           </template>
+
           <template v-else>
-          <slider :elements="sliderList" v-slot="{ element, visibility }">
-            <info-card class="slider-element"
+          <slider  v-slot="{ element, visibility }"
+          :elements="allCompanies"
+          :elementWidth="cardWidth"
+          :sliderPivot="currentCompany"
+          :sliderWidth="viewportWidth"
+          >
+            <info-card class="slider-element" ref="slider-element"
             :class="visibility"
             :key="element"
             :id="element.cnpjNumber"
@@ -26,25 +32,28 @@ app.component('Home', {
         </div>
       </div>
     </main>
-
-    <footer class="footer"></footer>
   </div>`,
+
   data() {
     return {
       title: 'Localizador de Empresas',
       firstSearchImagePath: '/assets/images/search_image.png',
       firstSearchMessage: 'Localize acima a primeira empresa',
+      cardWidth: 292,
     }
   },
+
   computed: {
-    ...Vuex.mapState([
-      'companies',
-      'sliderList'
+    ...Vuex.mapGetters([
+      'allCompanies',
+      'currentCompany',
+      'viewportWidth',
     ]),
     firstSearch() {
-      return this.companies.length === 0;
-    }
+      return this.allCompanies.length === 0;
+    },
   },
+
   methods: {
     openMap(cnpj) {
       this.$store.dispatch('selectCompany', cnpj);

@@ -25,7 +25,7 @@ app.component('InfoCard', {
         <span class="item-content">{{ name }}</span>
       </div>
 
-      <div class="card-item item">
+      <div class="card-item item card-priority">
         <span class="item-label">CNPJ</span>
         <span class="item-content">{{ cnpj }}</span>
       </div>
@@ -36,6 +36,7 @@ app.component('InfoCard', {
       </div>
     </div>
   </div>`,
+
   computed: {
     isInsideMaps() {
       return this.cardType === 'maps';

@@ -4,10 +4,12 @@
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  height: 15.2rem;
-  max-height: 15.2rem;
-  padding: 1.8rem 0;
+  height: 15.2em;
+  max-height: 15.2em;
+  padding: 1.8em 0;
+  margin-bottom: 6rem;
   color: $color-navbar;
+  background-color: $color-white;
 
   &-brand {
     font-size: 0.9em;
@@ -34,5 +36,20 @@
   &-form {
     color: $color-navbar;
     border-color: $color-navbar;
+  }
+}
+
+@media (max-width: 900px) {
+  .navbar {
+    font-size: 1.78vw;
+    margin-bottom: 10vw;
+  }
+}
+
+@media (max-width: 630px) {
+  .navbar {
+    box-sizing: content-box;
+    font-size: 11px;
+    max-height: unset;
   }
 }
