@@ -103,18 +103,15 @@ app.component('Slider', {
 
       if(this.hasEnoughElements) {
         let minimal = this.visibleElements + 4;
-        let r1 = minimal % 2, r2 = desiredLength % 2;
 
-        console.log(minimal, r1, r2)
-        if(r1 || r2) {
-          while(desiredLength < minimal || ((r1 ^ r2))) {
-            desiredLength += length;
-            r2 = desiredLength % 2;
-          }
+        if(minimal % 2 == 0) {
+          while(desiredLength < minimal || desiredLength % 2)  desiredLength += length;
         } else {
-          desiredLength += 1;
-          const middle = Math.floor((length-1)/2);
-          this.sliderList.push(this.sliderQueue[middle]);
+          if(length % 2 == 0) {
+            desiredLength += 1;
+            const middle = Math.floor((length-1)/2);
+            this.sliderList.push(this.sliderQueue[middle]);
+          }
           while(desiredLength < minimal) desiredLength += length;
         }
       }
