@@ -6,7 +6,9 @@ const store = Vuex.createStore({
       info: {
         status: false,
         message: '',
+        lastSearched: undefined,
       },
+      validCnpjNumber: undefined,
       viewportWidth: window.innerWidth,
     }
   },
@@ -16,6 +18,7 @@ const store = Vuex.createStore({
     currentCompany: (state) => state.currentCompany,
     infoStatus:     (state) => state.info && state.info.status,
     infoMessage:    (state) => state.info && state.info.message,
+    lastSearched:   (state) => state.info && state.info.lastSearched,
     viewportWidth:  (state) => state.viewportWidth,
   },
 
@@ -25,7 +28,7 @@ const store = Vuex.createStore({
     },
 
     handleSearch({ commit, state }, keyword) {
-      commit('clearInfoMessage');
+      commit('clearInfoData');
 
       try {
         if(keyword === null || keyword.length === 0) {
@@ -44,19 +47,22 @@ const store = Vuex.createStore({
           }
         }
 
-        onlyDigits = onlyDigits.join('');
+        commit('validateCnpj', parseInt(onlyDigits.join('')));
 
-        if(onlyDigits.length > 15 || onlyDigits.length < 13) {
+        if(!state.validCnpjNumber) {
           throw {
             status: 'ERROR',
-            message: 'A quantidade de dígitos informada não corresponde a um número de CNPJ válido.'
+            message: 'O número informado não é um CNPJ válido.'
           };
         }
 
-        if(state.companies.find( ({ cnpj }) => cnpj === keyword)) {
-          commit('setCurrentCompany', keyword);
+        // '==' intentionally preferred over the '==='
+        var cachedCompany = state.companies.find( ({ cnpjNumber }) => cnpjNumber == state.validCnpjNumber);
+
+        if(cachedCompany) {
+          commit('setCurrentCompany', cachedCompany);
         } else {
-          axios.get(`https://www.receitaws.com.br/v1/cnpj/${onlyDigits}`)
+          axios.get(`https://www.receitaws.com.br/v1/cnpj/${state.validCnpjNumber}`)
           .then(response => {
 
             if(response.data.status === 'ERROR') {
@@ -74,12 +80,16 @@ const store = Vuex.createStore({
           status: e.status || 'ERROR',
           message: e.message || 'Não foi possível realizar sua busca!'
         });
+      } finally {
+        state.validCnpjNumber = undefined;
       }
     },
 
-    selectCompany({ commit }, cnpj) {
-      commit('setCurrentCompany', cnpj);
-      commit('clearInfoMessage');
+    selectCompany({ commit, state }, selectedCnpj) {
+      var company = state.companies.find( ({ cnpj }) => cnpj === selectedCnpj);
+
+      commit('setCurrentCompany', company);
+      commit('clearInfoData');
     },
 
     updateViewportWidth({ commit }, width) {
@@ -96,9 +106,10 @@ const store = Vuex.createStore({
       state.currentCompany = currentCompany ? JSON.parse(currentCompany) : {};
     },
 
-    clearInfoMessage(state) {
+    clearInfoData(state) {
       state.info.status = false;
       state.info.message = '';
+      state.info.lastSearched = undefined;
     },
 
     addCompany(state, data) {
@@ -106,7 +117,7 @@ const store = Vuex.createStore({
         const { nome, cnpj, logradouro, numero, bairro, municipio, uf } = data;
         const company = {
           cnpj,
-          cnpjNumber: cnpj.match(/\d+/g).join(''),
+          cnpjNumber: parseInt(cnpj.match(/\d+/g).join('')),
           name: nome.split(' ').map(e => _.upperFirst(e.toLowerCase())).join(' '),
           address: [
             logradouro,
@@ -121,6 +132,7 @@ const store = Vuex.createStore({
 
         state.currentCompany = company;
         state.companies = [...state.companies, company];
+        state.info.lastSearched = company.cnpj;
         localStorage.setItem('companies', JSON.stringify(state.companies));
         localStorage.setItem('currentCompany', JSON.stringify(state.currentCompany));
       } catch (e) {
@@ -131,11 +143,11 @@ const store = Vuex.createStore({
       }
     },
 
-    setCurrentCompany(state, cnpj) {
+    setCurrentCompany(state, company) {
       try {
-        state.currentCompany = state.companies.find(company => company.cnpj === cnpj);
-        state.currentCompany = {...state.currentCompany};
-        localStorage.setItem('currentCompany', JSON.stringify(state.currentCompany));
+        state.currentCompany = {...company};
+        state.info.lastSearched = company.cnpj;
+        localStorage.setItem('currentCompany', JSON.stringify(company));
       } catch(e) {
         commit('setInfoMessage', {
           status: e.status || 'ERROR',
@@ -152,5 +164,29 @@ const store = Vuex.createStore({
     updateViewportWidth(state, width) {
       state.viewportWidth = width;
     },
+
+    validateCnpj(state, cnpj) {
+      var partial = Math.floor(cnpj / 100);
+
+      var dv1 = calculateDigit(partial);
+      var dv2 = calculateDigit(partial * 10 + dv1);
+      var number = partial * 100 + dv1 * 10 + dv2;
+
+      // '==' intentionally preferred over the '==='
+      state.validCnpjNumber = number > 0 && number == cnpj && cnpj;
+
+      function calculateDigit(partial) {
+        var acc = 0;
+
+        while(partial) {
+          for(var i=2; i<=9; i++) {
+            acc += (partial % 10) * i;
+            partial = Math.floor(partial / 10);
+          }
+        } acc %= 11;
+
+        return (acc < 2) ? 0 : 11 - acc;
+      }
+    }
   }
 })
