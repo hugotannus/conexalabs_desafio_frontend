@@ -1,4 +1,4 @@
-const { checkDigit, validateCnpj } = cnpjValidator;
+const { checkDigit, parseCnpj, validateCnpj } = cnpjValidator;
 
 describe("Calculate Check Digit", function() {
   describe("Aplica regras para obtenção de dígito verificador", function(){
@@ -15,10 +15,10 @@ describe("Calculate Check Digit", function() {
     });
   });
 
-  describe("Casos de Teste", function(){
+  describe("Casos de Teste", function() {
 
     function testCase(number, expected) {
-      it(`${number} deve retornar ${expected}`, function(){
+      it(`${number} deve retornar ${expected}`, function() {
         assert.equal(checkDigit(number), expected);
       });
     }
@@ -32,6 +32,28 @@ describe("Calculate Check Digit", function() {
   });
 })
 
+describe("Parse CNPJ", function() {
+  describe("Casos de teste", function() {
+
+    function numberCase(keyword, expected) {
+      it(`Entrada ${keyword} deve retornar ${expected}`, function() {
+        assert.equal(parseCnpj(keyword), expected);
+      });
+    }
+
+    function stringCase(keyword, expected) {
+      it(`Entrada '${keyword}' deve retornar ${expected}`, function() {
+        assert.equal(parseCnpj(keyword), expected);
+      });
+    }
+
+    stringCase('abcdefghijklm', 0);
+    numberCase(      37551750000161, 37551750000161);
+    stringCase(    '37551750000161', 37551750000161);
+    stringCase('37.551.750/0001-61', 37551750000161);
+  });
+})
+
 describe("CNPJ Validator", function() {
 
   describe("Verifica se o número fornecido corresponde a um CNPJ válido", function() {
@@ -39,8 +61,12 @@ describe("CNPJ Validator", function() {
       assert.equal(validateCnpj(68556684000146), true);
     });
 
-    it('Retorna true se for uma string (sem caracteres especiais) que corresponda a um número válido', function() {
+    it('Retorna true se for uma string que corresponda a um número válido...', function() {
       assert.equal(validateCnpj('68556684000146'), true);
+    });
+
+    it('... considerando, inclusive, caracteres especiais', function() {
+      assert.equal(validateCnpj('68.556.684/0001-46'), true);
     });
 
     it('Retorna false caso contrário.', function() {
@@ -65,9 +91,12 @@ describe("CNPJ Validator", function() {
     numberCase( 0, false );
     stringCase('00000000000000',false);
     stringCase('00342454000176',false);
+    stringCase('342.454/0001-76',false);
     stringCase('37551750000161', true);
     stringCase('03627203000109', true);
     numberCase( 37551750000161 , true);
     numberCase( 41771706000134 , true);
+    stringCase('37.551.750/0001-61', true);
+    stringCase('03.627.203/0001-09', true);
   });
 });

@@ -38,16 +38,7 @@ const store = Vuex.createStore({
           }
         }
 
-        var onlyDigits = keyword.match(/\d+/g);
-
-        if(onlyDigits === null) {
-          throw {
-            status: 'ERROR',
-            message: 'Essa busca considera apenas números/dígitos, filtrando quaisquer outros caracteres digitados.'
-          }
-        }
-
-        commit('validateCnpj', parseInt(onlyDigits.join('')));
+        commit('validateCnpj', keyword);
 
         if(!state.validCnpjNumber) {
           throw {
@@ -63,28 +54,19 @@ const store = Vuex.createStore({
           commit('setCurrentCompany', cachedCompany);
         } else {
           axios.get(`https://cors-anywhere.herokuapp.com/https://www.receitaws.com.br/v1/cnpj/${state.validCnpjNumber}`)
-          .then((response) => {
-
-            if(response.data.status === 'ERROR') {
-              throw {
-                message: `${response.data.message} ou não encontrado.`,
-                status: 'NOTFOUND'
-              }
-            }
-
-            return commit('addCompany', response.data);
-          }).catch((error) => {
+          .then((response) => commit('addCompany', response.data))
+          .catch((error) => {
             commit('setInfoMessage', {
               status: 'ERROR',
-              message: `Erro de requisição: ${error.message}`
+              message: `Não foi possível completar a busca (${error.message}).`
             });
             console.error(error);
           });
         }
-      } catch(e) {
+      } catch(error) {
         commit('setInfoMessage', {
-          status: e.status || 'ERROR',
-          message: e.message || 'Não foi possível realizar sua busca!'
+          status: error.status || 'ERROR',
+          message: error.message || 'Não foi possível realizar sua busca!'
         });
       } finally {
         state.validCnpjNumber = undefined;
@@ -172,8 +154,8 @@ const store = Vuex.createStore({
     },
 
     validateCnpj(state, cnpj) {
-      const { validateCnpj } = cnpjValidator;
-      state.validCnpjNumber = validateCnpj(cnpj) && cnpj;
+      const { validateCnpj, parseCnpj } = cnpjValidator;
+      state.validCnpjNumber = validateCnpj(cnpj) && parseCnpj(cnpj);
     }
   }
 })
