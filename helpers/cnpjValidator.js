@@ -1,4 +1,11 @@
 const cnpjValidator = function() {
+
+  return {
+    checkDigit,
+    parseCnpj,
+    validateCnpj
+  };
+
   function validateCnpj(cnpj) {
     var cnpjNumber = parseCnpj(cnpj)
     var partial = Math.floor(cnpjNumber / 100);
@@ -33,6 +40,4 @@ const cnpjValidator = function() {
 
     return (acc < 2) ? 0 : 11 - acc;
   }
-
-  return { checkDigit, parseCnpj, validateCnpj };
 }();

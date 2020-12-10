@@ -102,21 +102,8 @@ const store = Vuex.createStore({
 
     addCompany(state, data) {
       try {
-        const { nome, cnpj, logradouro, numero, bairro, municipio, uf } = data;
-        const company = {
-          cnpj,
-          cnpjNumber: parseInt(cnpj.match(/\d+/g).join('')),
-          name: nome.split(' ').map(e => _.upperFirst(e.toLowerCase())).join(' '),
-          address: [
-            logradouro,
-            numero,
-            bairro,
-            municipio,
-          ].map( function(element) {
-            let arr = element.split(' ');
-            return arr.map(e => _.upperFirst(e.toLowerCase())).join(' ');
-          }).join(', ').concat('-', uf),
-        }
+        const { parseCompany } = storeHelper;
+        const company = parseCompany(data);
 
         state.currentCompany = company;
         state.companies = [...state.companies, company];
