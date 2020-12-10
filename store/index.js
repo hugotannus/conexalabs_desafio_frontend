@@ -172,27 +172,8 @@ const store = Vuex.createStore({
     },
 
     validateCnpj(state, cnpj) {
-      var partial = Math.floor(cnpj / 100);
-
-      var dv1 = calculateDigit(partial);
-      var dv2 = calculateDigit(partial * 10 + dv1);
-      var number = partial * 100 + dv1 * 10 + dv2;
-
-      // '==' intentionally preferred over the '==='
-      state.validCnpjNumber = number > 0 && number == cnpj && cnpj;
-
-      function calculateDigit(partial) {
-        var acc = 0;
-
-        while(partial) {
-          for(var i=2; i<=9; i++) {
-            acc += (partial % 10) * i;
-            partial = Math.floor(partial / 10);
-          }
-        } acc %= 11;
-
-        return (acc < 2) ? 0 : 11 - acc;
-      }
+      const { validateCnpj } = cnpjValidator;
+      state.validCnpjNumber = validateCnpj(cnpj) && cnpj;
     }
   }
 })
