@@ -62,8 +62,8 @@ const store = Vuex.createStore({
         if(cachedCompany) {
           commit('setCurrentCompany', cachedCompany);
         } else {
-          axios.get(`https://www.receitaws.com.br/v1/cnpj/${state.validCnpjNumber}`)
-          .then(response => {
+          axios.get(`https://cors-anywhere.herokuapp.com/https://www.receitaws.com.br/v1/cnpj/${state.validCnpjNumber}`)
+          .then((response) => {
 
             if(response.data.status === 'ERROR') {
               throw {
@@ -72,7 +72,13 @@ const store = Vuex.createStore({
               }
             }
 
-            return commit('addCompany', response.data)
+            return commit('addCompany', response.data);
+          }).catch((error) => {
+            commit('setInfoMessage', {
+              status: 'ERROR',
+              message: `Erro de requisição: ${error.message}`
+            });
+            console.error(error);
           });
         }
       } catch(e) {
